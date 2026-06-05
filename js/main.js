@@ -98,12 +98,14 @@ form?.addEventListener("submit", async (e) => {
   submitBtn.textContent = "Enviando…";
   formStatus.hidden = true;
 
+  const params = new URLSearchParams();
+  Object.entries(data).forEach(([key, value]) => params.append(key, value));
+
   try {
     await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: params,
     });
 
     form.reset();

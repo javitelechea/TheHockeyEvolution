@@ -20,20 +20,20 @@ const SHEET_NAME = "Inscripciones";
 function doPost(e) {
   try {
     const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
-    const data = JSON.parse(e.postData.contents);
+    const p = e.parameter;
 
     sheet.appendRow([
       new Date(),
-      data.jugadorNombre || "",
-      data.jugadorApellido || "",
-      data.anioNacimiento || "",
-      data.club || "",
-      data.posicion || "",
-      data.responsableNombre || "",
-      data.responsableApellido || "",
-      data.telefono || "",
-      data.email || "",
-      data.comentarios || "",
+      p.jugadorNombre || "",
+      p.jugadorApellido || "",
+      p.anioNacimiento || "",
+      p.club || "",
+      p.posicion || "",
+      p.responsableNombre || "",
+      p.responsableApellido || "",
+      p.telefono || "",
+      p.email || "",
+      p.comentarios || "",
     ]);
 
     return ContentService
