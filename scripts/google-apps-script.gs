@@ -4,7 +4,7 @@
  * PASOS:
  * 1. Creá una Google Sheet nueva.
  * 2. En la primera fila, poné estos encabezados (columna A → K):
- *    Fecha | Jugador Nombre | Jugador Apellido | Edad | Club | Posición |
+ *    Fecha | Jugador Nombre | Jugador Apellido | Año Nacimiento | Club | Posición |
  *    Responsable Nombre | Responsable Apellido | Teléfono | Email | Comentarios
  * 3. Extensiones → Apps Script → pegá este código.
  * 4. Reemplazá SHEET_ID con el ID de tu hoja (está en la URL del Sheet).
@@ -14,7 +14,7 @@
  * 6. Copiá la URL del despliegue y pegala en js/config.js (GOOGLE_SCRIPT_URL).
  */
 
-const SHEET_ID = "TU_SHEET_ID_AQUI";
+const SHEET_ID = "1Qk1vemoUPYLCTcoM8C0ThfN7ip1tId-y57o5y6KhiCE";
 const SHEET_NAME = "Inscripciones";
 
 function doPost(e) {
@@ -26,7 +26,7 @@ function doPost(e) {
       new Date(),
       data.jugadorNombre || "",
       data.jugadorApellido || "",
-      data.edad || "",
+      data.anioNacimiento || "",
       data.club || "",
       data.posicion || "",
       data.responsableNombre || "",

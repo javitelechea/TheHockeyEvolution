@@ -84,7 +84,7 @@ form?.addEventListener("submit", async (e) => {
   const data = {
     jugadorNombre: form.jugadorNombre.value.trim(),
     jugadorApellido: form.jugadorApellido.value.trim(),
-    edad: form.edad.value.trim(),
+    anioNacimiento: form.anioNacimiento.value.trim(),
     club: form.club.value.trim(),
     posicion: form.posicion.value.trim(),
     responsableNombre: form.responsableNombre.value.trim(),
