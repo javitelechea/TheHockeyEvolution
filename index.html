@@ -38,12 +38,12 @@
             <li><a href="#clinica" class="nav__link">La clínica</a></li>
             <li><a href="#staff" class="nav__link">Staff</a></li>
             <li><a href="#detalles" class="nav__link">Detalles</a></li>
-            <li><a href="#inscripcion" class="nav__link">Inscripción</a></li>
+            <li><a href="#inscripcion" class="nav__link">Me interesa</a></li>
             <li><a href="#contacto" class="nav__link">Contacto</a></li>
           </ul>
         </nav>
 
-        <a href="#inscripcion" class="btn btn--primary nav__cta">Inscribite</a>
+        <a href="#inscripcion" class="btn btn--primary nav__cta">Consultá</a>
 
         <button
           class="nav__toggle"
@@ -109,14 +109,22 @@
         </div>
 
         <div class="hero__actions">
-          <a href="#inscripcion" class="btn btn--primary">Inscribite al camp</a>
+          <a href="#inscripcion" class="btn btn--primary">Me interesa el camp</a>
           <a
             href="https://wa.me/5491165828731"
-            class="btn btn--outline"
+            class="btn btn--outline whatsapp-link"
             target="_blank"
             rel="noopener noreferrer"
-            >WhatsApp</a
           >
+            <img
+              src="images/whatsapp.svg"
+              alt=""
+              class="whatsapp-link__icon"
+              width="20"
+              height="20"
+            />
+            +54 9 11 6582 8731
+          </a>
         </div>
       </div>
     </section>
@@ -319,15 +327,15 @@
       </div>
     </section>
 
-    <!-- Inscripción -->
+    <!-- Consulta / interés -->
     <section class="section inscripcion" id="inscripcion">
       <div class="container">
         <div class="reveal">
-          <span class="section__eyebrow">Inscripción</span>
-          <h2 class="section__title">Reservá tu lugar</h2>
+          <span class="section__eyebrow">Consultá</span>
+          <h2 class="section__title">¿Te interesa el camp?</h2>
           <p class="section__lead">
-            Completá el formulario y te contactamos con toda la información del
-            camp.
+            Dejanos tus datos y te contactamos con toda la información. No es
+            una inscripción definitiva — solo queremos saber que te interesa.
           </p>
         </div>
 
@@ -335,16 +343,28 @@
           <aside class="form-aside reveal reveal--left">
             <h3>¿Qué pasa después?</h3>
             <ul>
-              <li>Recibimos tu inscripción</li>
-              <li>Te escribimos con los próximos pasos</li>
+              <li>Recibimos tu consulta</li>
+              <li>Te escribimos con más info del camp</li>
               <li>Resolvemos cualquier duda por WhatsApp o email</li>
             </ul>
 
             <div class="form-aside__contact">
               <p>¿Preferís escribirnos directo?</p>
-              <a href="https://wa.me/5491165828731" target="_blank" rel="noopener noreferrer"
-                >WhatsApp: +54 9 11 6582 8731</a
-              ><br />
+              <a
+                href="https://wa.me/5491165828731"
+                class="whatsapp-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="images/whatsapp.svg"
+                  alt=""
+                  class="whatsapp-link__icon"
+                  width="20"
+                  height="20"
+                />
+                +54 9 11 6582 8731
+              </a><br />
               <a href="mailto:javitelechea@gmail.com">javitelechea@gmail.com</a>
             </div>
           </aside>
@@ -432,7 +452,7 @@
 
             <div class="form-row form-row--2">
               <div class="form-field">
-                <label for="telefono">Teléfono / WhatsApp</label>
+                <label for="telefono">Teléfono</label>
                 <input
                   type="tel"
                   id="telefono"
@@ -464,7 +484,7 @@
               actividades de The Hockey Evolution.
             </label>
 
-            <button type="submit" class="btn btn--primary">Enviar inscripción</button>
+            <button type="submit" class="btn btn--primary">Enviar consulta</button>
 
             <p class="form-status" id="form-status" hidden role="status"></p>
           </form>
@@ -520,9 +540,21 @@
           <div>
             <h4>Contacto</h4>
             <div class="footer__links">
-              <a href="https://wa.me/5491165828731" target="_blank" rel="noopener noreferrer"
-                >+54 9 11 6582 8731</a
+              <a
+                href="https://wa.me/5491165828731"
+                class="whatsapp-link"
+                target="_blank"
+                rel="noopener noreferrer"
               >
+                <img
+                  src="images/whatsapp.svg"
+                  alt=""
+                  class="whatsapp-link__icon"
+                  width="20"
+                  height="20"
+                />
+                +54 9 11 6582 8731
+              </a>
               <a href="mailto:javitelechea@gmail.com">javitelechea@gmail.com</a>
               <a
                 href="https://instagram.com/thehockeyevolution"
@@ -539,7 +571,7 @@
               <a href="#clinica">La clínica</a>
               <a href="#staff">Staff</a>
               <a href="#detalles">Detalles del camp</a>
-              <a href="#inscripcion">Inscripción</a>
+              <a href="#inscripcion">Me interesa</a>
             </div>
           </div>
         </div>

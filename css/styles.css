@@ -207,6 +207,22 @@ ul {
   border-color: var(--white);
 }
 
+.whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.whatsapp-link__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.btn.whatsapp-link {
+  gap: 0.625rem;
+}
+
 .btn--dark {
   background: var(--gray);
   color: var(--white);

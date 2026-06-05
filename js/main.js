@@ -103,7 +103,7 @@ form?.addEventListener("submit", async (e) => {
     form.reset();
     showStatus(
       "success",
-      "¡Inscripción enviada! Te contactaremos pronto con los próximos pasos."
+      "¡Consulta enviada! Te contactaremos pronto con más información."
     );
   } catch {
     showStatus(
@@ -124,7 +124,7 @@ function submitToGoogleSheets(data) {
       iframe = document.createElement("iframe");
       iframe.name = "sheet-submit-frame";
       iframe.id = "sheet-submit-frame";
-      iframe.title = "Envío de inscripción";
+      iframe.title = "Envío de consulta";
       iframe.style.display = "none";
       document.body.appendChild(iframe);
     }
