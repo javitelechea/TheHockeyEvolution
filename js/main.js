@@ -101,18 +101,24 @@ form?.addEventListener("submit", async (e) => {
   const params = new URLSearchParams();
   Object.entries(data).forEach(([key, value]) => params.append(key, value));
 
-  try {
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: params,
-    });
+  const url = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
 
-    form.reset();
-    showStatus(
-      "success",
-      "¡Inscripción enviada! Te contactaremos pronto con los próximos pasos."
-    );
+  try {
+    const response = await fetch(url, { method: "GET" });
+    const result = await response.json();
+
+    if (result.success) {
+      form.reset();
+      showStatus(
+        "success",
+        "¡Inscripción enviada! Te contactaremos pronto con los próximos pasos."
+      );
+    } else {
+      showStatus(
+        "error",
+        result.error || "No pudimos guardar la inscripción. Escribinos por WhatsApp."
+      );
+    }
   } catch {
     showStatus(
       "error",
