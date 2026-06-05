@@ -98,27 +98,13 @@ form?.addEventListener("submit", async (e) => {
   submitBtn.textContent = "Enviando…";
   formStatus.hidden = true;
 
-  const params = new URLSearchParams();
-  Object.entries(data).forEach(([key, value]) => params.append(key, value));
-
-  const url = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
-
   try {
-    const response = await fetch(url, { method: "GET" });
-    const result = await response.json();
-
-    if (result.success) {
-      form.reset();
-      showStatus(
-        "success",
-        "¡Inscripción enviada! Te contactaremos pronto con los próximos pasos."
-      );
-    } else {
-      showStatus(
-        "error",
-        result.error || "No pudimos guardar la inscripción. Escribinos por WhatsApp."
-      );
-    }
+    await submitToGoogleSheets(data);
+    form.reset();
+    showStatus(
+      "success",
+      "¡Inscripción enviada! Te contactaremos pronto con los próximos pasos."
+    );
   } catch {
     showStatus(
       "error",
@@ -129,6 +115,52 @@ form?.addEventListener("submit", async (e) => {
     submitBtn.textContent = originalText;
   }
 });
+
+function submitToGoogleSheets(data) {
+  return new Promise((resolve, reject) => {
+    let iframe = document.getElementById("sheet-submit-frame");
+
+    if (!iframe) {
+      iframe = document.createElement("iframe");
+      iframe.name = "sheet-submit-frame";
+      iframe.id = "sheet-submit-frame";
+      iframe.title = "Envío de inscripción";
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+    }
+
+    const tempForm = document.createElement("form");
+    tempForm.action = GOOGLE_SCRIPT_URL;
+    tempForm.method = "POST";
+    tempForm.target = "sheet-submit-frame";
+    tempForm.acceptCharset = "UTF-8";
+    tempForm.style.display = "none";
+
+    Object.entries(data).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      tempForm.appendChild(input);
+    });
+
+    let done = false;
+    const finish = (ok) => {
+      if (done) return;
+      done = true;
+      tempForm.remove();
+      ok ? resolve() : reject();
+    };
+
+    iframe.onload = () => finish(true);
+    iframe.onerror = () => finish(false);
+
+    document.body.appendChild(tempForm);
+    tempForm.submit();
+
+    setTimeout(() => finish(true), 5000);
+  });
+}
 
 function showStatus(type, message) {
   formStatus.hidden = false;
