@@ -1,5 +1,5 @@
 /**
- * THE HOCKEY EVOLUTION — Formulario → Google Sheets
+ * THE HOCKEY EVOLUTION — Formulario → Google Sheets + Email
  *
  * IMPORTANTE: Este script debe estar DENTRO de tu Google Sheet.
  * Abrí la Sheet → Extensiones → Apps Script → pegá este código.
@@ -7,18 +7,21 @@
  * PASOS:
  * 1. Fila 1: Fecha | Jugador Nombre | Jugador Apellido | Año Nacimiento | Club |
  *    Posición | Responsable Nombre | Responsable Apellido | Teléfono | Email | Comentarios
- * 2. Ejecutá "probarEscritura" (▶) — debe aparecer una fila en la hoja.
- * 3. Implementar → NUEVA implementación → Aplicación web
+ * 2. Cambiá NOTIFY_EMAIL si querés recibir las consultas en otro correo.
+ * 3. Ejecutá "probarEscritura" (▶) — debe aparecer una fila en la hoja.
+ * 4. Ejecutá "probarEmail" (▶) — debe llegarte un mail de prueba (autorizá el envío si lo pide).
+ * 5. Implementar → NUEVA implementación → Aplicación web
  *    - Ejecutar como: Yo
  *    - Quién tiene acceso: Cualquier persona
- * 4. Copiá la URL /exec NUEVA en js/config.js
- * 5. Subí config.js y main.js a GitHub
+ * 6. Copiá la URL /exec NUEVA en js/config.js
+ * 7. Subí config.js y main.js a GitHub
  *
  * NOTA: No pruebes con ?jugadorNombre= en el navegador — Google pierde los parámetros.
  * El formulario de la web envía por POST y eso sí funciona.
  */
 
-const SCRIPT_VERSION = 4;
+const SCRIPT_VERSION = 5;
+const NOTIFY_EMAIL = "javitelechea@gmail.com";
 
 function getSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -47,6 +50,36 @@ function appendInscripcion_(p) {
   ]);
 }
 
+function sendInscripcionEmail_(p) {
+  if (!NOTIFY_EMAIL) return;
+
+  const jugador = [p.jugadorNombre, p.jugadorApellido].filter(Boolean).join(" ");
+  const responsable = [p.responsableNombre, p.responsableApellido].filter(Boolean).join(" ");
+
+  const subject = "Nueva consulta — " + (jugador || "The Hockey Evolution");
+
+  const body =
+    "Nueva consulta desde el formulario de The Hockey Evolution\n\n" +
+    "Jugador: " + jugador + "\n" +
+    "Año de nacimiento: " + (p.anioNacimiento || "—") + "\n" +
+    "Club: " + (p.club || "—") + "\n" +
+    "Posición: " + (p.posicion || "—") + "\n\n" +
+    "Responsable: " + responsable + "\n" +
+    "Teléfono: " + (p.telefono || "—") + "\n" +
+    "Email: " + (p.email || "—") + "\n\n" +
+    "Comentarios:\n" + (p.comentarios || "—") + "\n\n" +
+    "—\n" +
+    "Enviado el " +
+    Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm");
+
+  MailApp.sendEmail({
+    to: NOTIFY_EMAIL,
+    subject: subject,
+    body: body,
+    replyTo: p.email || undefined,
+  });
+}
+
 function probarEscritura() {
   appendInscripcion_({
     jugadorNombre: "Prueba",
@@ -62,9 +95,29 @@ function probarEscritura() {
   });
 }
 
+function probarEmail() {
+  sendInscripcionEmail_({
+    jugadorNombre: "Prueba",
+    jugadorApellido: "Email",
+    anioNacimiento: "2012",
+    club: "Test",
+    posicion: "Delantero",
+    responsableNombre: "Responsable",
+    responsableApellido: "Test",
+    telefono: "111111",
+    email: "test@test.com",
+    comentarios: "Prueba de envío por mail desde Apps Script",
+  });
+}
+
 function doPost(e) {
   try {
     appendInscripcion_(e.parameter);
+    try {
+      sendInscripcionEmail_(e.parameter);
+    } catch (mailErr) {
+      console.error("No se pudo enviar el email:", mailErr.message);
+    }
     return ContentService.createTextOutput(
       JSON.stringify({ success: true, version: SCRIPT_VERSION })
     ).setMimeType(ContentService.MimeType.JSON);
