@@ -16,6 +16,9 @@
  * 6. Copiá la URL /exec NUEVA en js/config.js
  * 7. Subí config.js y main.js a GitHub
  *
+ * VERIFICAR: abrí la URL /exec en el navegador. Debe decir {"status":"ok","version":5}
+ * Si dice version 4, el script viejo sigue activo — repetí los pasos 4 a 6.
+ *
  * NOTA: No pruebes con ?jugadorNombre= en el navegador — Google pierde los parámetros.
  * El formulario de la web envía por POST y eso sí funciona.
  */
@@ -72,12 +75,15 @@ function sendInscripcionEmail_(p) {
     "Enviado el " +
     Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm");
 
-  MailApp.sendEmail({
+  const mailOptions = {
     to: NOTIFY_EMAIL,
     subject: subject,
     body: body,
-    replyTo: p.email || undefined,
-  });
+  };
+  if (p.email) {
+    mailOptions.replyTo = p.email;
+  }
+  MailApp.sendEmail(mailOptions);
 }
 
 function probarEscritura() {

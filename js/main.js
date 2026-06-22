@@ -66,17 +66,20 @@ if (prefersReducedMotion) {
   }
 }
 
-/* Form → Google Sheets */
+/* Form → Web3Forms (principal) + Google Sheets (respaldo opcional) */
 form?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalText = submitBtn.textContent;
 
-  if (typeof GOOGLE_SCRIPT_URL === "undefined" || GOOGLE_SCRIPT_URL.includes("TU_URL")) {
+  const hasWeb3Forms = isConfigured(WEB3FORMS_ACCESS_KEY, "TU_CLAVE_WEB3FORMS");
+  const hasGoogleSheets = isConfigured(GOOGLE_SCRIPT_URL, "TU_URL");
+
+  if (!hasWeb3Forms && !hasGoogleSheets) {
     showStatus(
       "error",
-      "Falta configurar Google Sheets. Revisá js/config.js y scripts/google-apps-script.gs."
+      "Falta configurar el formulario. Revisá js/config.js."
     );
     return;
   }
@@ -99,7 +102,16 @@ form?.addEventListener("submit", async (e) => {
   formStatus.hidden = true;
 
   try {
-    await submitToGoogleSheets(data);
+    if (hasWeb3Forms) {
+      await submitToWeb3Forms(data);
+    } else {
+      await submitToGoogleSheets(data);
+    }
+
+    if (hasGoogleSheets && hasWeb3Forms) {
+      submitToGoogleSheets(data).catch(() => {});
+    }
+
     form.reset();
     showStatus(
       "success",
@@ -116,49 +128,43 @@ form?.addEventListener("submit", async (e) => {
   }
 });
 
-function submitToGoogleSheets(data) {
-  return new Promise((resolve, reject) => {
-    let iframe = document.getElementById("sheet-submit-frame");
+function isConfigured(value, placeholder) {
+  return typeof value === "string" && value && !value.includes(placeholder);
+}
 
-    if (!iframe) {
-      iframe = document.createElement("iframe");
-      iframe.name = "sheet-submit-frame";
-      iframe.id = "sheet-submit-frame";
-      iframe.title = "Envío de consulta";
-      iframe.style.display = "none";
-      document.body.appendChild(iframe);
-    }
+function submitToWeb3Forms(data) {
+  const jugador = [data.jugadorNombre, data.jugadorApellido].filter(Boolean).join(" ");
+  const responsable = [data.responsableNombre, data.responsableApellido].filter(Boolean).join(" ");
 
-    const tempForm = document.createElement("form");
-    tempForm.action = GOOGLE_SCRIPT_URL;
-    tempForm.method = "POST";
-    tempForm.target = "sheet-submit-frame";
-    tempForm.acceptCharset = "UTF-8";
-    tempForm.style.display = "none";
-
-    Object.entries(data).forEach(([key, value]) => {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = value;
-      tempForm.appendChild(input);
+  return fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: `Nueva consulta — ${jugador || "The Hockey Evolution"}`,
+      from_name: "The Hockey Evolution",
+      name: responsable || jugador,
+      email: data.email,
+      ...data,
+    }),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      if (!result.success) {
+        throw new Error(result.message || "Error al enviar");
+      }
     });
+}
 
-    let done = false;
-    const finish = (ok) => {
-      if (done) return;
-      done = true;
-      tempForm.remove();
-      ok ? resolve() : reject();
-    };
-
-    iframe.onload = () => finish(true);
-    iframe.onerror = () => finish(false);
-
-    document.body.appendChild(tempForm);
-    tempForm.submit();
-
-    setTimeout(() => finish(true), 5000);
+function submitToGoogleSheets(data) {
+  return fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+    body: new URLSearchParams(data).toString(),
   });
 }
 
