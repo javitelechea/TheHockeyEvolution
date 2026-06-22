@@ -160,11 +160,49 @@ function submitToWeb3Forms(data) {
 }
 
 function submitToGoogleSheets(data) {
-  return fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-    body: new URLSearchParams(data).toString(),
+  return new Promise((resolve, reject) => {
+    let iframe = document.getElementById("sheet-submit-frame");
+
+    if (!iframe) {
+      iframe = document.createElement("iframe");
+      iframe.name = "sheet-submit-frame";
+      iframe.id = "sheet-submit-frame";
+      iframe.title = "Envío de consulta";
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+    }
+
+    const tempForm = document.createElement("form");
+    tempForm.action = GOOGLE_SCRIPT_URL;
+    tempForm.method = "POST";
+    tempForm.target = "sheet-submit-frame";
+    tempForm.acceptCharset = "UTF-8";
+    tempForm.style.display = "none";
+
+    const payload = { ...data, soloSheet: "1" };
+    Object.entries(payload).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      tempForm.appendChild(input);
+    });
+
+    let done = false;
+    const finish = (ok) => {
+      if (done) return;
+      done = true;
+      tempForm.remove();
+      ok ? resolve() : reject();
+    };
+
+    iframe.onload = () => finish(true);
+    iframe.onerror = () => finish(false);
+
+    document.body.appendChild(tempForm);
+    tempForm.submit();
+
+    setTimeout(() => finish(true), 5000);
   });
 }
 

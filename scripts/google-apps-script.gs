@@ -119,10 +119,12 @@ function probarEmail() {
 function doPost(e) {
   try {
     appendInscripcion_(e.parameter);
-    try {
-      sendInscripcionEmail_(e.parameter);
-    } catch (mailErr) {
-      console.error("No se pudo enviar el email:", mailErr.message);
+    if (e.parameter.soloSheet !== "1") {
+      try {
+        sendInscripcionEmail_(e.parameter);
+      } catch (mailErr) {
+        console.error("No se pudo enviar el email:", mailErr.message);
+      }
     }
     return ContentService.createTextOutput(
       JSON.stringify({ success: true, version: SCRIPT_VERSION })
