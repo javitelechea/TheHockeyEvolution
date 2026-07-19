@@ -499,6 +499,77 @@ ul {
   gap: 1rem;
 }
 
+.hero__badge--alert {
+  background: #f5c518;
+  border-color: #e0b000;
+  color: #1a1a1a;
+}
+
+.hero__badge--alert .hero__badge-dot {
+  background: #1a1a1a;
+}
+
+/* ── Date notice ── */
+.date-notice {
+  background: #f5c518;
+  color: #1a1a1a;
+  padding: 2.75rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.date-notice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    #f0b800 0%,
+    #f5c518 45%,
+    #ffd84d 100%
+  );
+  opacity: 1;
+}
+
+.date-notice__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+}
+
+.date-notice__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  color: #5c4500;
+}
+
+.date-notice__title {
+  font-size: clamp(1.35rem, 3.5vw, 1.85rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.date-notice__title span {
+  color: var(--blue-dark);
+}
+
+.date-notice__text {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #2a2a2a;
+  max-width: 48ch;
+}
+
+.date-notice__text strong {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
 /* ── About ── */
 .about__grid {
   display: grid;
