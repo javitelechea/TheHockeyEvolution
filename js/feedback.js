@@ -13,7 +13,10 @@ form?.addEventListener("submit", async (e) => {
   const originalText = submitBtn.textContent;
 
   const hasWeb3Forms = isConfigured(WEB3FORMS_ACCESS_KEY, "TU_CLAVE_WEB3FORMS");
-  const hasGoogleSheets = isConfigured(GOOGLE_SCRIPT_URL_DEVOLUCION, "TU_URL");
+  const hasGoogleSheets = isConfigured(
+    GOOGLE_SCRIPT_URL_DEVOLUCION,
+    "TU_URL_DEVOLUCION"
+  );
 
   if (!hasWeb3Forms && !hasGoogleSheets) {
     showStatus(
@@ -63,12 +66,12 @@ form?.addEventListener("submit", async (e) => {
   try {
     if (hasWeb3Forms) {
       await submitToWeb3Forms(data);
-    } else {
-      await submitToGoogleSheets(data);
     }
 
-    if (hasGoogleSheets && hasWeb3Forms) {
-      submitToGoogleSheets(data).catch(() => {});
+    if (hasGoogleSheets) {
+      await submitToGoogleSheets(data);
+    } else if (!hasWeb3Forms) {
+      throw new Error("Sin canal de envío");
     }
 
     form.reset();
@@ -125,49 +128,17 @@ function submitToWeb3Forms(data) {
 }
 
 function submitToGoogleSheets(data) {
-  return new Promise((resolve, reject) => {
-    let iframe = document.getElementById("sheet-submit-frame");
+  const body = new FormData();
+  const payload = { ...data, soloSheet: "1" };
+  Object.entries(payload).forEach(([key, value]) => {
+    body.append(key, value == null ? "" : String(value));
+  });
 
-    if (!iframe) {
-      iframe = document.createElement("iframe");
-      iframe.name = "sheet-submit-frame";
-      iframe.id = "sheet-submit-frame";
-      iframe.title = "Envío de devolución";
-      iframe.style.display = "none";
-      document.body.appendChild(iframe);
-    }
-
-    const tempForm = document.createElement("form");
-    tempForm.action = GOOGLE_SCRIPT_URL_DEVOLUCION;
-    tempForm.method = "POST";
-    tempForm.target = "sheet-submit-frame";
-    tempForm.acceptCharset = "UTF-8";
-    tempForm.style.display = "none";
-
-    const payload = { ...data, soloSheet: "1" };
-    Object.entries(payload).forEach(([key, value]) => {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = value;
-      tempForm.appendChild(input);
-    });
-
-    let done = false;
-    const finish = (ok) => {
-      if (done) return;
-      done = true;
-      tempForm.remove();
-      ok ? resolve() : reject();
-    };
-
-    iframe.onload = () => finish(true);
-    iframe.onerror = () => finish(false);
-
-    document.body.appendChild(tempForm);
-    tempForm.submit();
-
-    setTimeout(() => finish(true), 5000);
+  // no-cors: Google redirige la respuesta; no podemos leerla, pero el POST sí llega.
+  return fetch(GOOGLE_SCRIPT_URL_DEVOLUCION, {
+    method: "POST",
+    mode: "no-cors",
+    body,
   });
 }
 
