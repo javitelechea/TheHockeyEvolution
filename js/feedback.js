@@ -1,7 +1,4 @@
-const nav = document.getElementById("nav");
-const navToggle = document.getElementById("nav-toggle");
-const navLogo = document.getElementById("nav-logo");
-const form = document.getElementById("inscripcion-form");
+const form = document.getElementById("devolucion-form");
 const formStatus = document.getElementById("form-status");
 const yearEl = document.getElementById("year");
 
@@ -9,64 +6,6 @@ if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
 
-/* Nav scroll + mobile menu */
-function updateNavState() {
-  const useDarkLogo = window.scrollY > 40 || nav.classList.contains("nav--open");
-  nav.classList.toggle("nav--scrolled", window.scrollY > 40);
-  if (navLogo) {
-    navLogo.src = useDarkLogo ? "images/logo-dark.png" : "images/logo-light.png";
-  }
-}
-
-window.addEventListener("scroll", updateNavState);
-
-navToggle?.addEventListener("click", () => {
-  const open = nav.classList.toggle("nav--open");
-  navToggle.setAttribute("aria-expanded", open);
-  updateNavState();
-});
-
-document.querySelectorAll(".nav__link, .btn").forEach((link) => {
-  link.addEventListener("click", () => {
-    nav.classList.remove("nav--open");
-    navToggle?.setAttribute("aria-expanded", "false");
-    updateNavState();
-  });
-});
-
-updateNavState();
-
-/* Scroll reveal */
-const revealEls = document.querySelectorAll(".reveal, .reveal-stagger");
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-if (prefersReducedMotion) {
-  revealEls.forEach((el) => el.classList.add("reveal--visible"));
-} else {
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("reveal--visible");
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
-  );
-
-  revealEls.forEach((el) => revealObserver.observe(el));
-
-  /* Hero animates on load */
-  const heroContent = document.querySelector(".hero__content");
-  if (heroContent) {
-    requestAnimationFrame(() => {
-      heroContent.classList.add("reveal--visible");
-    });
-  }
-}
-
-/* Form → Web3Forms (principal) + Google Sheets (respaldo opcional) */
 form?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -85,18 +24,38 @@ form?.addEventListener("submit", async (e) => {
   }
 
   const data = {
-    formType: "inscripcion",
+    formType: "devolucion",
     jugadorNombre: form.jugadorNombre.value.trim(),
     jugadorApellido: form.jugadorApellido.value.trim(),
-    anioNacimiento: form.anioNacimiento.value.trim(),
-    club: form.club.value.trim(),
-    posicion: form.posicion.value.trim(),
-    responsableNombre: form.responsableNombre.value.trim(),
-    responsableApellido: form.responsableApellido.value.trim(),
-    telefono: form.telefono.value.trim(),
     email: form.email.value.trim(),
+    valoracionGeneral: getRadioValue(form, "valoracionGeneral"),
+    valoracionStaff: getRadioValue(form, "valoracionStaff"),
+    valoracionContenido: getRadioValue(form, "valoracionContenido"),
+    loMejor: form.loMejor.value.trim(),
+    aMejorar: form.aMejorar.value.trim(),
+    volveria: form.volveria.value.trim(),
+    recomendaria: form.recomendaria.value.trim(),
     comentarios: form.comentarios.value.trim(),
   };
+
+  if (
+    !data.valoracionGeneral ||
+    !data.valoracionStaff ||
+    !data.valoracionContenido
+  ) {
+    showStatus("error", "Completá las tres valoraciones del 1 al 5.");
+    return;
+  }
+
+  if (!data.loMejor) {
+    showStatus("error", "Contanos qué fue lo que más te gustó.");
+    return;
+  }
+
+  if (!data.volveria || !data.recomendaria) {
+    showStatus("error", "Completá si volverías y si la recomendarías.");
+    return;
+  }
 
   submitBtn.disabled = true;
   submitBtn.textContent = "Enviando…";
@@ -116,7 +75,7 @@ form?.addEventListener("submit", async (e) => {
     form.reset();
     showStatus(
       "success",
-      "¡Consulta enviada! Te contactaremos pronto con más información."
+      "¡Gracias por tu devolución! Nos ayuda un montón a seguir creciendo."
     );
   } catch {
     showStatus(
@@ -129,13 +88,19 @@ form?.addEventListener("submit", async (e) => {
   }
 });
 
+function getRadioValue(formEl, name) {
+  const checked = formEl.querySelector(`input[name="${name}"]:checked`);
+  return checked ? checked.value : "";
+}
+
 function isConfigured(value, placeholder) {
   return typeof value === "string" && value && !value.includes(placeholder);
 }
 
 function submitToWeb3Forms(data) {
-  const jugador = [data.jugadorNombre, data.jugadorApellido].filter(Boolean).join(" ");
-  const responsable = [data.responsableNombre, data.responsableApellido].filter(Boolean).join(" ");
+  const jugador = [data.jugadorNombre, data.jugadorApellido]
+    .filter(Boolean)
+    .join(" ");
 
   return fetch("https://api.web3forms.com/submit", {
     method: "POST",
@@ -145,10 +110,10 @@ function submitToWeb3Forms(data) {
     },
     body: JSON.stringify({
       access_key: WEB3FORMS_ACCESS_KEY,
-      subject: `Nueva consulta — ${jugador || "The Hockey Evolution"}`,
+      subject: `Nueva devolución — ${jugador || "The Hockey Evolution"}`,
       from_name: "The Hockey Evolution",
-      name: responsable || jugador,
-      email: data.email,
+      name: jugador || "Jugadora",
+      email: data.email || "noreply@hockeyevolution.com.ar",
       ...data,
     }),
   })
@@ -168,7 +133,7 @@ function submitToGoogleSheets(data) {
       iframe = document.createElement("iframe");
       iframe.name = "sheet-submit-frame";
       iframe.id = "sheet-submit-frame";
-      iframe.title = "Envío de consulta";
+      iframe.title = "Envío de devolución";
       iframe.style.display = "none";
       document.body.appendChild(iframe);
     }

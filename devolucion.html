@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Dejanos tu devolución del Camp The Hockey Evolution. Tu feedback nos ayuda a seguir mejorando."
+    />
+    <meta name="robots" content="noindex" />
+    <title>Devolución — The Hockey Evolution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="page-feedback">
+    <header class="nav nav--scrolled" id="nav">
+      <div class="container nav__inner">
+        <a href="index.html" class="nav__brand">
+          <span class="nav__logo">
+            <img
+              id="nav-logo"
+              src="images/logo-dark.png"
+              alt=""
+              width="44"
+              height="44"
+            />
+          </span>
+          <span>The Hockey Evolution</span>
+        </a>
+        <a href="index.html" class="btn btn--primary nav__cta">Volver al sitio</a>
+      </div>
+    </header>
+
+    <main class="section inscripcion feedback">
+      <div class="container">
+        <div class="reveal reveal--visible">
+          <span class="section__eyebrow">Camp Julio 2026</span>
+          <h1 class="section__title">¿Cómo la pasaste?</h1>
+          <p class="section__lead">
+            Gracias por venir. Contanos cómo te fue en la clínica — tu opinión
+            nos ayuda a mejorar las próximas ediciones.
+          </p>
+        </div>
+
+        <div class="form-layout form-layout--single">
+          <form
+            class="inscripcion-form reveal reveal--visible"
+            id="devolucion-form"
+            novalidate
+          >
+            <p class="form-group-title">Sobre vos</p>
+
+            <div class="form-row form-row--2">
+              <div class="form-field form-field--optional">
+                <label for="jugadorNombre">Nombre</label>
+                <input
+                  type="text"
+                  id="jugadorNombre"
+                  name="jugadorNombre"
+                  autocomplete="given-name"
+                />
+              </div>
+              <div class="form-field form-field--optional">
+                <label for="jugadorApellido">Apellido</label>
+                <input
+                  type="text"
+                  id="jugadorApellido"
+                  name="jugadorApellido"
+                  autocomplete="family-name"
+                />
+              </div>
+            </div>
+
+            <div class="form-field form-field--optional">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+              />
+            </div>
+
+            <p class="form-group-title">Tu experiencia</p>
+
+            <fieldset class="form-rating">
+              <legend>Valoración general</legend>
+              <div class="form-rating__options" role="radiogroup">
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionGeneral" value="1" required />
+                  <span>1</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionGeneral" value="2" />
+                  <span>2</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionGeneral" value="3" />
+                  <span>3</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionGeneral" value="4" />
+                  <span>4</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionGeneral" value="5" />
+                  <span>5</span>
+                </label>
+              </div>
+              <div class="form-rating__hints">
+                <span>Muy mala</span>
+                <span>Excelente</span>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-rating">
+              <legend>Valoración del staff</legend>
+              <div class="form-rating__options" role="radiogroup">
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionStaff" value="1" required />
+                  <span>1</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionStaff" value="2" />
+                  <span>2</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionStaff" value="3" />
+                  <span>3</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionStaff" value="4" />
+                  <span>4</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionStaff" value="5" />
+                  <span>5</span>
+                </label>
+              </div>
+              <div class="form-rating__hints">
+                <span>Muy malo</span>
+                <span>Excelente</span>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-rating">
+              <legend>Valoración del contenido</legend>
+              <div class="form-rating__options" role="radiogroup">
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionContenido" value="1" required />
+                  <span>1</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionContenido" value="2" />
+                  <span>2</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionContenido" value="3" />
+                  <span>3</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionContenido" value="4" />
+                  <span>4</span>
+                </label>
+                <label class="form-rating__option">
+                  <input type="radio" name="valoracionContenido" value="5" />
+                  <span>5</span>
+                </label>
+              </div>
+              <div class="form-rating__hints">
+                <span>Muy malo</span>
+                <span>Excelente</span>
+              </div>
+            </fieldset>
+
+            <div class="form-field">
+              <label for="loMejor">¿Qué fue lo que más te gustó?</label>
+              <textarea id="loMejor" name="loMejor" required></textarea>
+            </div>
+
+            <div class="form-field form-field--optional">
+              <label for="aMejorar">¿Qué mejorarías?</label>
+              <textarea id="aMejorar" name="aMejorar"></textarea>
+            </div>
+
+            <div class="form-row form-row--2">
+              <div class="form-field">
+                <label for="volveria">¿Volverías a una próxima clínica?</label>
+                <select id="volveria" name="volveria" required>
+                  <option value="">Seleccionar</option>
+                  <option value="Sí">Sí</option>
+                  <option value="Tal vez">Tal vez</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="recomendaria">¿La recomendarías a una amiga?</label>
+                <select id="recomendaria" name="recomendaria" required>
+                  <option value="">Seleccionar</option>
+                  <option value="Sí">Sí</option>
+                  <option value="Tal vez">Tal vez</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field form-field--optional">
+              <label for="comentarios">Algo más que quieras contarnos</label>
+              <textarea id="comentarios" name="comentarios"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--primary">Enviar devolución</button>
+
+            <p class="form-status" id="form-status" hidden role="status"></p>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="footer__bottom">
+          © <span id="year"></span> The Hockey Evolution. Todos los derechos
+          reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/feedback.js"></script>
+  </body>
+</html>

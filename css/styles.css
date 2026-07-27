@@ -922,6 +922,113 @@ ul {
   color: #c62828;
 }
 
+/* ── Feedback / devolución ── */
+.page-feedback {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(43, 83, 163, 0.18), transparent),
+    linear-gradient(180deg, #1a1a1a 0%, var(--gray) 40%, #161616 100%);
+  min-height: 100vh;
+}
+
+.page-feedback .nav {
+  position: sticky;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.page-feedback .feedback {
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+  background: transparent;
+}
+
+.form-layout--single {
+  grid-template-columns: 1fr;
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.form-rating {
+  border: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.form-rating legend {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--gray);
+  margin-bottom: 0.65rem;
+}
+
+.form-rating__options {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-rating__option {
+  flex: 1;
+  cursor: pointer;
+}
+
+.form-rating__option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form-rating__option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--gray-mid);
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    color var(--transition);
+}
+
+.form-rating__option:hover span {
+  border-color: var(--blue-light);
+  color: var(--blue);
+}
+
+.form-rating__option input:checked + span {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+
+.form-rating__option input:focus-visible + span {
+  outline: 2px solid var(--blue-light);
+  outline-offset: 2px;
+}
+
+.form-rating__hints {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--gray-mid);
+}
+
+.page-feedback .footer {
+  background: transparent;
+  padding: 1.5rem 0 2.5rem;
+}
+
+.page-feedback .footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
 /* ── Sponsors ── */
 .sponsors__grid {
   display: grid;
