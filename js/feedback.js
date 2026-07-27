@@ -13,7 +13,7 @@ form?.addEventListener("submit", async (e) => {
   const originalText = submitBtn.textContent;
 
   const hasWeb3Forms = isConfigured(WEB3FORMS_ACCESS_KEY, "TU_CLAVE_WEB3FORMS");
-  const hasGoogleSheets = isConfigured(GOOGLE_SCRIPT_URL, "TU_URL");
+  const hasGoogleSheets = isConfigured(GOOGLE_SCRIPT_URL_DEVOLUCION, "TU_URL");
 
   if (!hasWeb3Forms && !hasGoogleSheets) {
     showStatus(
@@ -24,7 +24,6 @@ form?.addEventListener("submit", async (e) => {
   }
 
   const data = {
-    formType: "devolucion",
     jugadorNombre: form.jugadorNombre.value.trim(),
     jugadorApellido: form.jugadorApellido.value.trim(),
     email: form.email.value.trim(),
@@ -139,7 +138,7 @@ function submitToGoogleSheets(data) {
     }
 
     const tempForm = document.createElement("form");
-    tempForm.action = GOOGLE_SCRIPT_URL;
+    tempForm.action = GOOGLE_SCRIPT_URL_DEVOLUCION;
     tempForm.method = "POST";
     tempForm.target = "sheet-submit-frame";
     tempForm.acceptCharset = "UTF-8";
