@@ -1,22 +1,22 @@
 /**
  * THE HOCKEY EVOLUTION — Devoluciones del camp → Google Sheets + Email
  *
- * IMPORTANTE: Usá una Google Sheet NUEVA, separada de Inscripciones.
+ * Sheet: "2607 Devoluciones"
  * Abrí esa Sheet → Extensiones → Apps Script → pegá este código.
  *
+ * Encabezados (fila 1):
+ * Fecha | Nombre | Apellido | Mail | General | Staff | Contenido |
+ * Lo mejor | A mejorar | Volveria | Recomendaria | Comentarios
+ *
  * PASOS:
- * 1. Creá un Google Sheet nuevo, por ejemplo "THE — Devoluciones Camp".
- * 2. En la fila 1 de la primera hoja:
- *    Fecha | Jugador Nombre | Jugador Apellido | Email |
- *    Valoración General | Valoración Staff | Valoración Contenido |
- *    Lo mejor | A mejorar | ¿Volvería? | ¿Recomendaría? | Comentarios
- * 3. Cambiá NOTIFY_EMAIL si hace falta.
- * 4. Ejecutá "probarEscritura" (▶).
- * 5. Implementar → Nueva implementación → Aplicación web
+ * 1. Verificá que la fila 1 tenga esos encabezados.
+ * 2. Cambiá NOTIFY_EMAIL si hace falta.
+ * 3. Ejecutá "probarEscritura" (▶).
+ * 4. Implementar → Nueva implementación → Aplicación web
  *    - Ejecutar como: Yo
  *    - Quién tiene acceso: Cualquier persona
- * 6. Copiá la URL /exec en js/config.js → GOOGLE_SCRIPT_URL_DEVOLUCION
- * 7. Subí config.js a GitHub.
+ * 5. Copiá la URL /exec en js/config.js → GOOGLE_SCRIPT_URL_DEVOLUCION
+ * 6. Subí config.js a GitHub.
  *
  * VERIFICAR: abrí la URL /exec. Debe decir {"status":"ok","version":1,"form":"devolucion"}
  */
